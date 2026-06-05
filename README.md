@@ -30,7 +30,7 @@
 | 1:35-2:10 | NumPy入門 |
 | 2:10-2:45 | Pandas入門 |
 | 2:45-3:10 | 可視化と簡単なデータ確認 |
-| 3:10-3:30 | 演習と機械学習講習への接続 |
+| 3:10-3:30 | 機械学習講習への接続 |
 
 ## ファイル構成
 
@@ -44,10 +44,6 @@
 │   ├── 02_data_structures.md
 │   ├── 03_numpy_pandas.md
 │   └── 04_bridge_to_ml.md
-├── exercises
-│   ├── 01_basics.py
-│   ├── 02_data_structures.py
-│   └── 03_numpy_pandas.py
 └── examples
     ├── mini_analysis.py
     └── scores.csv
@@ -69,7 +65,33 @@ pip install -r requirements.txt
 python examples/mini_analysis.py
 ```
 
-演習は `exercises/` のファイルを開き、`TODO` を埋めながら進めます。
+## サイトとして見る
+
+サイト用の依存関係をインストールします。
+
+```bash
+python3 -m pip install -r requirements-site.txt
+```
+
+ローカルで確認します。
+
+```bash
+mkdocs serve
+```
+
+静的ファイルをビルドします。
+
+```bash
+mkdocs build
+```
+
+Cloudflare Pagesで公開する場合は、ビルドコマンドに次を指定します。
+
+```bash
+python3 -m pip install -r requirements-site.txt && mkdocs build
+```
+
+出力ディレクトリは `site` です。
 
 ## 講師向けメモ
 
