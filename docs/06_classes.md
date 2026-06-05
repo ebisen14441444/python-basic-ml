@@ -4,28 +4,38 @@
 
 前の章では、`model.fit()` は「`model` オブジェクトの `fit()` メソッドを呼び出している」と読みました。
 
-この章では、`fit()` や `predict()` を持つオブジェクトを、自分で作ってみます。
+この章では、機械学習でよく見るオブジェクトを、自分で作ってみます。
+
+前章までで扱った文字列、リスト、辞書なども、Pythonが最初から用意してくれているオブジェクトです。
+
+`class` を使うと、自分で新しい種類のオブジェクトを作れるようになります。
 
 ## クラスは設計図
 
 クラスは、オブジェクトの設計図です。
+車を作るときに設計図が必要なように、オブジェクトを作るときにも設計図があると考えます。
+
+`class` には、そのオブジェクトが持つ属性やメソッドをまとめて書きます。
+まずは、中身が空のクラスを作ってみます。
+
+このクラスからオブジェクトを作る行為をインスタンス化と言います。
 
 ```python
-class ThresholdModel:
+class Conv2d:
     pass
 
-model = ThresholdModel()
+conv = Conv2d()
 
-print(type(model))
+print(type(conv))
 ```
 
-`ThresholdModel()` と書くと、`ThresholdModel` クラスからオブジェクトを作れます。
+`Conv2d()` と書くと、`Conv2d` クラスからオブジェクトを作れます。
 
 ## 属性
 
 属性は、オブジェクトが持っているデータや状態についた名前です。
-
 メソッドは「操作」、属性は「情報」と考えると読みやすいです。
+車の例えで言うなら、「右に曲がる」のような動作はメソッドで、ガソリン容量や高さのような情報は属性です。
 
 まず、普通の変数と比べてみます。
 
@@ -62,152 +72,255 @@ print(f"loss: {result.loss}")
 - `result.accuracy`: `result` オブジェクトの中にある属性
 
 属性を読むときは `()` をつけません。
+属性は情報そのものなので、関数のように呼び出す必要がありません。
 
-- `result.accuracy`: 属性を読む
-- `result.loss`: 属性を読む
+- `result.accuracy`
 
 一方で、メソッドを呼び出すときは `()` をつけます。
 
-- `scores.append(70)`: メソッドを呼び出す
-- `model.predict(75)`: メソッドを呼び出す
+- `scores.append(70)`
 
 ## `__init__`で初期設定する
 
 オブジェクトを作るときに最初に実行される処理は `__init__` に書きます。
 
+ここでは、画像認識などでよく出てくる `Conv2d` っぽいものを作ってみます。
+
+本物の `Conv2d` はもっと複雑ですが、ここでは「設定を持ったオブジェクト」として見ます。
+
 ```python
-class ThresholdModel:
-    def __init__(self, threshold):
-        self.threshold = threshold
+class Conv2d:
+    def __init__(self, in_channels, out_channels, kernel_size):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
 
-model = ThresholdModel(threshold=60)
+    def forward(self, image_shape):
+        height = image_shape[0]
+        width = image_shape[1]
+        output_height = height - self.kernel_size + 1
+        output_width = width - self.kernel_size + 1
+        return [output_height, output_width, self.out_channels]
 
-print(f"threshold: {model.threshold}")
+conv = Conv2d(in_channels=3, out_channels=16, kernel_size=3)
+output_shape = conv.forward([32, 32, 3])
+
+print(f"in_channels: {conv.in_channels}")
+print(f"out_channels: {conv.out_channels}")
+print(f"kernel_size: {conv.kernel_size}")
+print(f"output_shape: {output_shape}")
 ```
 
-ここでは、`model` を作った時点で `threshold` という属性を持たせています。
+ここでは、`conv` を作った時点で、次の属性を持たせています。
 
-`self.threshold` は、「このオブジェクトの `threshold` 属性」という意味です。
+- `in_channels`: 入力のチャンネル数
+- `out_channels`: 出力のチャンネル数
+- `kernel_size`: フィルタの大きさ
+
+`self.in_channels` は、「このオブジェクトの `in_channels` 属性」という意味です。
+
+`Conv2d(in_channels=3, out_channels=16, kernel_size=3)` と書いたとき、`3` や `16` が `__init__` に渡され、オブジェクトの属性として保存されます。
+
+この形がわかると、ライブラリのコードも少し読みやすくなります。
+
+```text
+conv = Conv2d(in_channels=3, out_channels=16, kernel_size=3)
+```
+
+これは、「3チャンネルの入力を受け取り、16チャンネルの出力を作る、サイズ3のフィルタを持つConv2dを作る」と読めます。
+
+`forward()` の説明は、次のセクションでします。
 
 ## メソッドを定義する
 
 クラスの中に関数を書くと、そのオブジェクトのメソッドになります。
+`Conv2d` なら、入力を受け取って出力を作る動作がメソッドになります。
+車の例えで言うなら、「右に曲がる」のような動作を定義する部分です。
+
+ここでは本物の画像計算はせず、入力の形から出力の形だけを返す `forward()` を作ります。
 
 ```python
-class ThresholdModel:
-    def __init__(self, threshold):
-        self.threshold = threshold
+class Conv2d:
+    def __init__(self, in_channels, out_channels, kernel_size):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
 
-    def predict(self, score):
-        return score >= self.threshold
+    def forward(self, image_shape):
+        height = image_shape[0]
+        width = image_shape[1]
+        output_height = height - self.kernel_size + 1
+        output_width = width - self.kernel_size + 1
+        return [output_height, output_width, self.out_channels]
 
-model = ThresholdModel(threshold=60)
+conv = Conv2d(in_channels=3, out_channels=16, kernel_size=3)
 
-print(model.predict(75))
-print(model.predict(45))
+output_shape = conv.forward([32, 32, 3])
+
+print(f"output_shape: {output_shape}")
 ```
 
-`model.predict(75)` は、`model` オブジェクトが持っている `predict()` メソッドを呼び出しています。
+`def forward` のところで定義されているように、リストを引数で受け取って、`image_shape` という変数としてメソッド内では扱っています。
+`conv.forward([32, 32, 3])` は、`conv` オブジェクトが持っている `forward()` メソッドを呼び出しています。
+
+属性に対して、メソッドは `conv.forward(...)` のように、そのオブジェクトに処理をさせるものです。
+メソッドは、オブジェクトが持っている関数だと考えると読みやすいです。
+
+`forward()` の中では、`__init__`で属性として保存しておいた `kernel_size` や `out_channels` を使っています。
 
 ## `self`
-
 `self` は、作られたオブジェクト自身を表します。
 
+たとえば `conv = Conv2d(...)` で作ったオブジェクト `conv` に対して、`conv.forward(...)` と書くとします。
+このとき、`forward()` の中では `conv` 自身を `self` という名前で受け取っています。
+
+つまり、次のようなイメージです。
+
+- 外から見ると `conv.in_channels`
+- クラスの中から見ると `self.in_channels`
+
+どちらも「そのオブジェクトが持っている `in_channels`」を見ています。
+
 ```python
-class ThresholdModel:
-    def __init__(self, threshold):
-        self.threshold = threshold
+class Conv2d:
+    def __init__(self, in_channels, out_channels, kernel_size):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
 
-    def show_threshold(self):
-        print(f"threshold: {self.threshold}")
+    def show_config(self):
+        print(f"in_channels: {self.in_channels}")
+        print(f"out_channels: {self.out_channels}")
+        print(f"kernel_size: {self.kernel_size}")
 
-model = ThresholdModel(threshold=60)
+conv = Conv2d(in_channels=3, out_channels=16, kernel_size=3)
 
-model.show_threshold()
+conv.show_config()
 ```
 
-`self.threshold` と書くことで、そのオブジェクトが持っている `threshold` を使えます。
+`self.in_channels` と書くことで、そのオブジェクトが持っている `in_channels` を使えます。
 
-## `fit()`を作る
+ここで大事なのは、`show_config()` の中で使っている値が、`conv` を作ったときの設定だということです。
+
+つまり、オブジェクトは属性を持っていて、メソッドの中でその属性を使えます。
+`self` があるから、同じクラスから複数のオブジェクトを作っても、それぞれ別の属性として区別できます。
+
+```python
+class Conv2d:
+    def __init__(self, in_channels, out_channels, kernel_size):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
+
+conv_small = Conv2d(in_channels=3, out_channels=16, kernel_size=3)
+conv_large = Conv2d(in_channels=3, out_channels=32, kernel_size=5)
+
+print(f"small: {conv_small.out_channels}, kernel_size={conv_small.kernel_size}")
+print(f"large: {conv_large.out_channels}, kernel_size={conv_large.kernel_size}")
+```
+
+`conv_small` と `conv_large` は同じ `Conv2d` クラスから作っていますが、持っている属性は別々です。
+
+## 試しに`fit()`を作ってみる
 
 機械学習では、`fit()` は学習するためのメソッドとしてよく使われます。
 
-ここでは、点数リストの平均をしきい値として覚える簡単なモデルを作ります。
+ここでは、最小二乗法で直線を学習する簡単なモデルを作ります。
+
+入力 `x` から、`y = weight * x + bias` の形で予測するモデルです。
+
+最小二乗法は、「データにできるだけよく合う直線」を探す方法です。
+
+ここでは、次のように考えます。
+
+- `weight`: 直線の傾き
+- `bias`: 直線の切片
+- `fit()`: データから `weight` と `bias` を計算する
+- `predict()`: 計算した `weight` と `bias` を使って予測する
 
 ```python
-class ThresholdModel:
+class LinearRegression:
     def __init__(self):
-        self.threshold = 60
+        self.weight = 0
+        self.bias = 0
 
-    def fit(self, scores):
-        self.threshold = sum(scores) / len(scores)
+    def fit(self, x_values, y_values):
+        x_mean = sum(x_values) / len(x_values)
+        y_mean = sum(y_values) / len(y_values)
 
-    def predict(self, score):
-        return score >= self.threshold
+        numerator = 0
+        denominator = 0
 
-model = ThresholdModel()
+        for x, y in zip(x_values, y_values):
+            numerator = numerator + (x - x_mean) * (y - y_mean)
+            denominator = denominator + (x - x_mean) ** 2
 
-train_scores = [80, 65, 90]
-model.fit(train_scores)
+        self.weight = numerator / denominator
+        self.bias = y_mean - self.weight * x_mean
 
-print(f"threshold: {model.threshold}")
-print(model.predict(85))
-print(model.predict(60))
+    def predict(self, x):
+        return self.weight * x + self.bias
+
+model = LinearRegression()
+
+x_train = [1, 2, 3, 4]
+y_train = [2, 4, 6, 8]
+
+model.fit(x_train, y_train)
+
+print(f"weight: {model.weight}")
+print(f"bias: {model.bias}")
+print(f"prediction: {model.predict(5)}")
 ```
 
-`model.fit(train_scores)` を実行すると、`model` の中の `threshold` が更新されます。
+`model.fit(x_train, y_train)` を実行すると、`model` の中の `weight` と `bias` が更新されます。
 
-## 状態を持つオブジェクト
+`fit()` の中では、まず `x` と `y` の平均を計算しています。
 
-オブジェクトは、属性として状態を持てます。
-
-```python
-class EarlyStopping:
-    def __init__(self, patience):
-        self.patience = patience
-        self.best_loss = 1.0
-        self.bad_count = 0
-
-    def check(self, loss):
-        if loss < self.best_loss:
-            self.best_loss = loss
-            self.bad_count = 0
-            return False
-
-        self.bad_count = self.bad_count + 1
-        return self.bad_count >= self.patience
-
-early_stopping = EarlyStopping(patience=2)
-losses = [0.90, 0.62, 0.48, 0.49, 0.50]
-
-for loss in losses:
-    should_stop = early_stopping.check(loss)
-    print(f"loss: {loss}, best_loss: {early_stopping.best_loss}, should_stop: {should_stop}")
-
-    if should_stop:
-        print("early stopping")
-        break
+```text
+x_mean = sum(x_values) / len(x_values)
+y_mean = sum(y_values) / len(y_values)
 ```
 
-`best_loss` や `bad_count` は、`early_stopping` オブジェクトの中に保存されています。
+そのあと、各データが平均からどれくらいズレているかを使って、直線の傾きを計算しています。
 
-## クラスを読むときの見方
+- `numerator`: `x` が平均より大きいとき、`y` も平均より大きいかを見ている
+- `denominator`: `x` 自体がどれくらいばらついているかを見ている
+
+最後に、傾き `weight` が決まったあと、平均の位置を通るように `bias` を決めています。
+
+```text
+self.weight = numerator / denominator
+self.bias = y_mean - self.weight * x_mean
+```
+
+`predict()` は、`fit()` で覚えた `weight` と `bias` を使って予測します。
+
+つまり、`fit()` はモデルに学習させるメソッド、`predict()` は学習後のモデルで予測するメソッドです。
+
+## クラスの読み方
 
 クラスを読むときは、次の順番で見ると追いやすいです。
 
 ```python
-class ThresholdModel:
-    def __init__(self, threshold):
-        self.threshold = threshold
+class Conv2d:
+    def __init__(self, in_channels, out_channels, kernel_size):
+        self.in_channels = in_channels
+        self.out_channels = out_channels
+        self.kernel_size = kernel_size
 
-    def predict(self, score):
-        return score >= self.threshold
+    def forward(self, image_shape):
+        height = image_shape[0]
+        width = image_shape[1]
+        output_height = height - self.kernel_size + 1
+        output_width = width - self.kernel_size + 1
+        return [output_height, output_width, self.out_channels]
 ```
 
-- `class ThresholdModel`: クラス名
+- `class Conv2d`: クラス名
 - `__init__`: オブジェクトを作るときの初期設定
-- `self.threshold`: オブジェクトが持つ属性
-- `predict`: オブジェクトが持つメソッド
+- `self.in_channels`: オブジェクトが持つ属性
+- `forward`: オブジェクトが持つメソッド
 
 ## このページのまとめ
 
