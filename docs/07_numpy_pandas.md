@@ -1,4 +1,4 @@
-# 03. NumPyとPandas
+# 07. NumPyとPandas
 
 ## NumPy
 

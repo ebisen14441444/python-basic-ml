@@ -66,6 +66,87 @@ body {
   background: #f8fafc;
 }
 
+.python-runner {
+  margin: 18px 0 22px;
+}
+
+.python-runner .highlight,
+.python-runner > pre {
+  margin: 0;
+}
+
+.python-runner-toolbar {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 40px;
+  padding: 8px 10px;
+  border: 1px solid #e5e7eb;
+  border-bottom: 0;
+  border-radius: 6px 6px 0 0;
+  background: #f9fafb;
+}
+
+.python-runner-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-height: 30px;
+  padding: 6px 12px;
+  border: 1px solid #1d4ed8;
+  border-radius: 4px;
+  background: #2563eb;
+  color: #fff;
+  font-weight: 600;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.python-runner-button:hover {
+  background: #1d4ed8;
+}
+
+.python-runner-button:disabled {
+  border-color: #9ca3af;
+  background: #9ca3af;
+  cursor: wait;
+}
+
+.python-runner-play {
+  width: 0;
+  height: 0;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 8px solid currentColor;
+}
+
+.python-runner-status {
+  color: #4b5563;
+  font-size: 13px;
+}
+
+.python-runner-output {
+  margin: 0;
+  padding: 12px 14px;
+  border: 1px solid #d1d5db;
+  border-top: 0;
+  border-radius: 0 0 6px 6px;
+  background: #111827;
+  color: #f9fafb;
+  white-space: pre-wrap;
+}
+
+.python-runner-output[hidden] {
+  display: none;
+}
+
+.python-runner-output code {
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 14px;
+}
+
 .wy-side-nav-search,
 .wy-nav-top {
   background: #2563eb;

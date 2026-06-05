@@ -12,13 +12,20 @@ theme:
 extra_css:
   - stylesheets/extra.css
 
+extra_javascript:
+  - javascripts/python-runner.js
+
 nav:
   - はじめに: index.md
   - 00. 環境準備: 00_setup.md
   - 01. Pythonの基本: 01_python_basics.md
   - 02. データ構造: 02_data_structures.md
-  - 03. NumPyとPandas: 03_numpy_pandas.md
-  - 04. 機械学習講習会への接続: 04_bridge_to_ml.md
+  - 03. 条件分岐と繰り返し: 03_control_flow.md
+  - 04. 関数: 04_functions.md
+  - 05. オブジェクトとドット記法: 05_objects.md
+  - 06. クラス: 06_classes.md
+  - 07. NumPyとPandas: 07_numpy_pandas.md
+  - 08. 機械学習講習会への接続: 08_bridge_to_ml.md
 
 markdown_extensions:
   - fenced_code
