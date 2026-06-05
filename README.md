@@ -88,7 +88,7 @@ mkdocs build
 Cloudflare Pagesで公開する場合は、ビルドコマンドに次を指定します。
 
 ```bash
-python3 -m pip install -r requirements-site.txt && mkdocs build
+python3 -m pip install -r requirements-site.txt && python3 -m mkdocs build
 ```
 
 出力ディレクトリは `site` です。
