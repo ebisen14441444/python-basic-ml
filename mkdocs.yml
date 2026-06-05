@@ -9,6 +9,9 @@ theme:
   name: readthedocs
   locale: ja
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - はじめに: index.md
   - 00. 環境準備: 00_setup.md
