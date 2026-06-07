@@ -26,10 +26,10 @@ nav:
   - 05. オブジェクトとドット記法: 05_objects.md
   - 06. クラス: 06_classes.md
   - 07. よく見るPythonの書き方: 07_python_extras.md
-  - 08. NumPyの基本: 08_numpy_basics.md
-  - 09. NumPyの多次元配列: 09_numpy_multidim.md
-  - 10. NumPyの取り出しと条件抽出: 10_numpy_indexing.md
-  - 11. NumPyの計算: 11_numpy_calculation.md
+  - 08. NumPy：配列を作成する: 08_numpy_basics.md
+  - 09. NumPyの操作: 09_numpy_multidim.md
+  - 10. NumPyの取り出しとaxis: 10_numpy_indexing.md
+  - 11. NumPyの応用：実画像を操作する: 11_numpy_calculation.md
   - 12. Polarsの基本: 12_polars_basics.md
   - 13. Polarsの列操作と条件抽出: 13_polars_select_filter.md
   - 14. Polarsと機械学習の前処理: 14_polars_ml_prep.md
