@@ -133,6 +133,14 @@ body {
   border-radius: 0 0 6px 6px;
   background: #111827;
   color: #f9fafb;
+}
+
+.python-runner-output-text {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: inherit;
   white-space: pre-wrap;
 }
 
@@ -145,6 +153,32 @@ body {
   background: transparent;
   color: inherit;
   font-size: 14px;
+}
+
+.python-runner-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 260px));
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.python-runner-image {
+  margin: 0;
+}
+
+.python-runner-image img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #374151;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.python-runner-image figcaption {
+  margin-top: 6px;
+  color: #d1d5db;
+  font-size: 13px;
 }
 
 .wy-side-nav-search,
