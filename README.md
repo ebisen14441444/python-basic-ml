@@ -57,9 +57,12 @@
 │   ├── 11_numpy_calculation.md
 │   ├── 12_polars_basics.md
 │   ├── 13_polars_select_filter.md
-│   ├── 14_polars_ml_prep.md
-│   └── 15_bridge_to_ml.md
+│   ├── 14_polars_multiple_select.md
+│   └── 15_polars_timeseries.md
 └── examples
+    ├── flights.csv
+    ├── penguins.csv
+    ├── seattle-weather.csv
     ├── mini_analysis.py
     └── scores.csv
 ```

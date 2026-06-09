@@ -39,12 +39,35 @@ body {
 }
 
 .rst-content h2 {
-  margin-top: 36px;
+  margin-top: 48px;
+  padding-top: 28px;
+  border-top: 1px solid #dbe3ee;
   font-size: 26px;
 }
 
 .rst-content h3 {
   font-size: 20px;
+}
+
+.rst-content .section-card {
+  margin: 24px 0;
+  padding: 22px 24px 24px;
+  border: 1px solid #dbe3ee;
+  border-left: 5px solid #2563eb;
+  border-radius: 8px;
+  background: #ffffff;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.06);
+}
+
+.rst-content .section-card > h3:first-child {
+  margin-top: 0;
+  margin-bottom: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.rst-content .section-card > :last-child {
+  margin-bottom: 0;
 }
 
 .rst-content a {
@@ -212,5 +235,9 @@ body {
 
   .rst-content h1 {
     font-size: 30px;
+  }
+
+  .rst-content .section-card {
+    padding: 18px 16px 20px;
   }
 }

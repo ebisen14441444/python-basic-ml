@@ -14,6 +14,7 @@ extra_css:
   - stylesheets/extra.css
 
 extra_javascript:
+  - javascripts/section-cards.js
   - javascripts/python-runner.js
 
 nav:
@@ -32,8 +33,8 @@ nav:
   - 11. NumPyの応用：実画像を操作する: 11_numpy_calculation.md
   - 12. Polarsの基本: 12_polars_basics.md
   - 13. Polarsの列操作と条件抽出: 13_polars_select_filter.md
-  - 14. Polarsと機械学習の前処理: 14_polars_ml_prep.md
-  - 15. 機械学習講習会への接続: 15_bridge_to_ml.md
+  - 14. Polarsの複雑な操作: 14_polars_multiple_select.md
+  - 15. Polarsで時系列データを扱う: 15_polars_timeseries.md
 
 markdown_extensions:
   - fenced_code

@@ -1,14 +1,17 @@
 # 12. Polarsの基本
 
-このページでは、Polarsの基本を扱います。
+ここからは、Polarsを扱います。
 
-Polarsは、表形式データを扱うためのライブラリです。
+Polarsは、表形式データというエクセルみたいなデータを扱うためのライブラリです。
 
-CSVファイルを読み込んだり、行数や列名を確認したりできます。
+全体的SQLに似た書き方が多いので、そちらを学習している人はわかりやすいかなと思います。
 
-## ライブラリを読み込む
+機械学習講習会ではこの `Polars`を使って、コードを書いていきます。
+
+### ライブラリを読み込む
 
 Polarsは、慣習的に `pl` という短い名前をつけて使います。
+ここはどのライブラリでも同じです。
 
 ```python
 import polars as pl
@@ -16,11 +19,9 @@ import polars as pl
 print(pl.__version__)
 ```
 
-`import polars as pl` は、「Polarsを `pl` という名前で使います」という意味です。
+### DataFrameを作る
 
-## DataFrameを作る
-
-表形式のデータは、DataFrameとして扱います。
+表形式のデータは、DataFrameという名前で扱います。
 
 ```python
 import polars as pl
@@ -35,72 +36,68 @@ df = pl.DataFrame({
 print(df)
 ```
 
-DataFrameは、行と列を持つ表のようなオブジェクトです。
+DataFrameは、エクセルのような行と列を持つ表のようなオブジェクトです。
 
-1人分のデータが1行、点数や合否のような項目が列になります。
+今回の例は1人分のデータが1行、点数や合否のような項目が列になります。
 
-## CSVを読み込む
+ただ基本的には自分で作るより、外部のデータを読み込んでそれを扱っていくことがほとんどです。
 
-実際のデータ分析では、CSVファイルを読み込むことが多いです。
+### CSVを読み込む
+
+前述の通り、実際のデータ分析では、CSVファイルを読み込むことが多いです。
+
+ここでは、Palmer Penguinsという有名なデータセットを使います。
+
+ペンギンの種類、住んでいる島、くちばしの長さ、体重などが入った表です。
 
 ```python
 import polars as pl
 
-df = pl.read_csv("examples/scores.csv")
+df = pl.read_csv("examples/penguins.csv")
 
 print(df)
 ```
+## データを見る
+### データを見る
 
-Colabで実行する場合は、CSVファイルをアップロードしてからパスを指定します。
-
-## 先頭を見る
-
-データを読み込んだら、まず先頭を見ます。
+データを読み込んだら、まずはデータの中身を見てみましょう。
 
 ```python
 import polars as pl
-
-df = pl.read_csv("examples/scores.csv")
+df = pl.read_csv("examples/penguins.csv")
 
 print(df.head())
+print(df.tail())
+print(df.sample(n = 5))
+print(df.sample(fraction = 0.05))
 ```
 
-`head()` は、先頭の数行を見るためのメソッドです。
+`head()` は、先頭の数行を見るためのメソッドです。`()`で先頭幾つのデータを見るかを指定します。デフォルトは5つです。
+`tail`は末尾を見ます。`sample`はランダムに見ます。
 
-読み込んだデータが想定どおりか、まずここで確認します。
+### 行数と列数と型を見る
 
-## 行数と列数を見る
-
-DataFrameの形は `shape` で確認できます。
+`shape`で形状の確認、`columns` で列名の一覧を確認できます。
 
 ```python
 import polars as pl
-
-df = pl.read_csv("examples/scores.csv")
+df = pl.read_csv("examples/penguins.csv")
 
 print(df.shape)
 print(df.columns)
-```
-
-`shape` は属性なので `()` をつけません。
-
-`columns` も属性で、列名の一覧を確認できます。
-
-## 型を見る
-
-列ごとの型は `schema` で確認できます。
-
-```python
-import polars as pl
-
-df = pl.read_csv("examples/scores.csv")
-
 print(df.schema)
 ```
 
-`i64` は整数、`str` は文字列、`bool` は `True` / `False` を表します。
+### 統計量を見る
+ざっくり統計量を見たい時は`describe()`を使う
 
-表データを扱うときは、列名だけでなく型も見る習慣をつけると安全です。
+```python
+import polars as pl
+df = pl.read_csv("examples/penguins.csv")
+
+print(df.describe())
+```
+
 
 ## このページのまとめ
 

@@ -4,8 +4,8 @@
 
 NumPyでは、値そのものだけでなく、「何次元か」「どんな形か」「どんな型か」を読むことがとても大事です。
 
-## 配列の属性を見る
-
+## 配列の属性と型
+### 属性
 NumPy配列は、配列についての情報を属性として持っています。
 
 ```python
@@ -36,9 +36,9 @@ print(X.T)
 
 機械学習では、`X.shape` を見て「何件のデータがあり、特徴量が何個あるか」を確認することがよくあります。
 
-## `dtype`
+### `dtype`
 
-`dtype` は、配列の中の値の型です。
+`dtype` 属性は、配列の中の値の型です。
 
 ```python
 import numpy as np
@@ -64,7 +64,8 @@ print(complex_values.dtype)
 
 `uint8` は少ないメモリで0から255までの値を表せる型です。データが小さくなると、結果として処理や転送が軽くなることがあります。
 
-## `reshape`
+## 配列の形状
+### `reshape`
 
 `reshape()` を使うと、要素数を変えずに配列の形を変えられます。
 
@@ -88,7 +89,42 @@ print(matrix2.shape)
 
 `-1` を使うと、その次元の大きさはNumPyが自動計算します。
 
-## もっと多次元にする
+<div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+
+<div>
+<p><code>values</code> (shape: (6,))</p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>matrix1 = values.reshape(2, 3)</code> (shape: (2, 3))</p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>matrix2 = values.reshape(2, -1)</code> (shape: (2, 3))</p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+`reshape(2, -1)` は「2行で、列はNumPyが計算」という意味です。6個の値を2行に並べるので、列は自動的に3になります。
+
+### もっと多次元にする
 
 画像や深層学習では、3次元以上の配列もよく出てきます。
 
@@ -112,7 +148,54 @@ print(array_4d.shape)
 
 最初は出力を見ながら、「外側から順にまとまりが増えている」と読むとわかりやすいです。
 
-## 形を変えるときの注意
+<p><code>array_2d</code> (shape: (4, 6))</p>
+
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td></tr>
+<tr><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+<tr><td>12</td><td>13</td><td>14</td><td>15</td><td>16</td><td>17</td></tr>
+<tr><td>18</td><td>19</td><td>20</td><td>21</td><td>22</td><td>23</td></tr>
+</tbody>
+</table>
+
+<p><code>array_3d</code> (shape: (2, 3, 4)) — 3行4列が2層</p>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+
+<div>
+<p>1層目</p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+<tr><td>4</td><td>5</td><td>6</td><td>7</td></tr>
+<tr><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p>2層目</p>
+<table>
+<tbody>
+<tr><td>12</td><td>13</td><td>14</td><td>15</td></tr>
+<tr><td>16</td><td>17</td><td>18</td><td>19</td></tr>
+<tr><td>20</td><td>21</td><td>22</td><td>23</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+各shapeの意味は次のとおりです。
+
+| 配列 | shape | 意味 |
+|---|---|---|
+| `array_2d` | (4, 6) | 4行6列 |
+| `array_3d` | (2, 3, 4) | 3行4列が2層 |
+| `array_4d` | (1, 2, 3, 4) | (3行4列が2層) のかたまりが1つ |
+
+### 形を変えるときの注意
 
 要素数が合わない形には変えられません。
 
@@ -126,13 +209,22 @@ print(values.reshape(3, 2))
 
 6個の値は、3行2列にもできます。
 
+<p><code>values.reshape(3, 2)</code> (shape: (3, 2))</p>
+
+<table>
+<tbody>
+<tr><td>0</td><td>1</td></tr>
+<tr><td>2</td><td>3</td></tr>
+<tr><td>4</td><td>5</td></tr>
+</tbody>
+</table>
+
 一方で、4行2列にするには8個の値が必要なので、形が合いません。
 
-`-1` は便利ですが、1回の `reshape()` の中で使えるのは1つだけです。
+`-1` は便利ですが、複数の場所を `-1` にすると、NumPyがどちらをどの大きさにすればよいか決められません。
 
-複数の場所を `-1` にすると、NumPyがどちらをどの大きさにすればよいか決められません。
-
-## 配列を結合する
+## 配列の結合 分割
+### 配列を結合する
 
 `np.concatenate()` は、すでにある軸に沿って配列をつなげます。
 
@@ -147,6 +239,37 @@ connected = np.concatenate([a, b])
 print(connected)
 print(connected.shape)
 ```
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>a</code> (shape: (3,))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td><td>3</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>b</code> (shape: (3,))</p>
+<table>
+<tbody>
+<tr><td>4</td><td>5</td><td>6</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>connected</code> (shape: (6,))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
 
 2次元配列では、`axis` を指定すると行方向にも列方向にも結合できます。
 
@@ -172,11 +295,61 @@ print(columns)
 print(columns.shape)
 ```
 
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>a</code> (shape: (2, 2))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>b</code> (shape: (2, 2))</p>
+<table>
+<tbody>
+<tr><td>5</td><td>6</td></tr>
+<tr><td>7</td><td>8</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>rows = concatenate([a, b], axis=0)</code> (shape: (4, 2))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td></tr>
+<tr><td>5</td><td>6</td></tr>
+<tr><td>7</td><td>8</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>columns = concatenate([a, b], axis=1)</code> (shape: (2, 4))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td><td>5</td><td>6</td></tr>
+<tr><td>3</td><td>4</td><td>7</td><td>8</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
 `axis=0` では行が増えます。
 
 `axis=1` では列が増えます。
 
-## `stack` で新しい軸を作る
+### `stack` で新しい軸を作る
 
 `np.stack()` は、新しい軸を作って配列を重ねます。
 
@@ -201,11 +374,66 @@ print(batch.shape)
 
 `image1` と `image2` はどちらも2行2列です。
 
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>image1</code> (shape: (2, 2))</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>image2</code> (shape: (2, 2))</p>
+<table>
+<tbody>
+<tr><td>5</td><td>6</td></tr>
+<tr><td>7</td><td>8</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
 `np.stack([image1, image2])` にすると、「2枚の2行2列画像」のような3次元配列になります。
+
+<p><code>batch</code> (shape: (2, 2, 2))</p>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p>1枚目</p>
+<table>
+<tbody>
+<tr><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p>2枚目</p>
+<table>
+<tbody>
+<tr><td>5</td><td>6</td></tr>
+<tr><td>7</td><td>8</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
 
 `concatenate` は既存の軸に沿ってつなげる、`stack` は新しい軸を作って重ねる、と考えると読みやすいです。
 
-## 配列を分割する
+| 関数 | 軸 | shapeの変化例 |
+|---|---|---|
+| `np.concatenate` | 既存の軸に沿ってつなぐ | (2, 2) + (2, 2) → (4, 2) or (2, 4) |
+| `np.stack` | 新しい軸を作る | (2, 2) + (2, 2) → (2, 2, 2) |
+
+### 配列を分割する
 
 `np.split()` を使うと、配列を分割できます。
 
@@ -221,6 +449,45 @@ print(parts[1])
 print(parts[2])
 ```
 
+<p><code>values</code> (shape: (12,))</p>
+
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td><td>3</td><td>4</td><td>5</td><td>6</td><td>7</td><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+</tbody>
+</table>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>parts[0]</code></p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td><td>3</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>parts[1]</code></p>
+<table>
+<tbody>
+<tr><td>4</td><td>5</td><td>6</td><td>7</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>parts[2]</code></p>
+<table>
+<tbody>
+<tr><td>8</td><td>9</td><td>10</td><td>11</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
+
 2次元配列も分割できます。
 
 ```python
@@ -233,6 +500,41 @@ upper, lower = np.split(X, 2, axis=0)
 print(upper)
 print(lower)
 ```
+
+<p><code>X</code> (shape: (4, 3))</p>
+
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td><td>5</td></tr>
+<tr><td>6</td><td>7</td><td>8</td></tr>
+<tr><td>9</td><td>10</td><td>11</td></tr>
+</tbody>
+</table>
+
+<div style="display: flex; gap: 2rem; flex-wrap: wrap; align-items: flex-start;">
+
+<div>
+<p><code>upper</code> (shape: (2, 3))</p>
+<table>
+<tbody>
+<tr><td>0</td><td>1</td><td>2</td></tr>
+<tr><td>3</td><td>4</td><td>5</td></tr>
+</tbody>
+</table>
+</div>
+
+<div>
+<p><code>lower</code> (shape: (2, 3))</p>
+<table>
+<tbody>
+<tr><td>6</td><td>7</td><td>8</td></tr>
+<tr><td>9</td><td>10</td><td>11</td></tr>
+</tbody>
+</table>
+</div>
+
+</div>
 
 `axis=0` で分割すると、行方向に分かれます。
 
