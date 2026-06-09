@@ -18,7 +18,7 @@ VS Code やローカルの Python 環境は必須ではありません。
 
 下のバッジから、講習で使うノートブックを Colab で開けます。
 
-[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/ebisen14441444/python-basic-ml/blob/main/notebook.ipynb)
+<a href="https://colab.research.google.com/github/ebisen14441444/python-basic-ml/blob/main/notebook.ipynb" target="_blank" rel="noopener noreferrer"><img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab"></a>
 
 リンクが開けない場合は、次のURLをブラウザで開いてください。
 
