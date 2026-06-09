@@ -40,5 +40,6 @@ nav:
 markdown_extensions:
   - fenced_code
   - tables
+  - admonition
   - toc:
       permalink: true
