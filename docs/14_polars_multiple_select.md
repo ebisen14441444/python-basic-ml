@@ -148,8 +148,6 @@ print(df.select("species_category").schema)
 
 結合の仕方をひたすら見ていきましょう。
 
-// 簡単な図解とともにできますか？
-
 結合は、複数のDataFrameをキー列でつなげる操作です。
 
 <div style="display: flex; gap: 2rem; flex-wrap: wrap;">

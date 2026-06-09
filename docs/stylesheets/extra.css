@@ -89,6 +89,45 @@ body {
   background: #f8fafc;
 }
 
+.rst-content pre.has-copy-button {
+  position: relative;
+}
+
+.copy-code-button {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+  padding: 4px 10px;
+  font-size: 12px;
+  line-height: 1.4;
+  color: #374151;
+  background: #ffffffd9;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+  cursor: pointer;
+  opacity: 0;
+  transition: opacity 120ms ease, background-color 120ms ease, color 120ms ease;
+}
+
+.rst-content pre.has-copy-button:hover .copy-code-button,
+.rst-content pre.has-copy-button:focus-within .copy-code-button,
+.copy-code-button:focus {
+  opacity: 1;
+}
+
+.copy-code-button:hover {
+  background: #ffffff;
+  color: #111827;
+}
+
+.copy-code-button.copied {
+  background: #d1fae5;
+  border-color: #10b981;
+  color: #065f46;
+  opacity: 1;
+}
+
 .python-runner {
   margin: 18px 0 22px;
 }

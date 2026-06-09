@@ -16,6 +16,7 @@ extra_css:
 extra_javascript:
   - javascripts/section-cards.js
   - javascripts/python-runner.js
+  - javascripts/copy-code.js
 
 nav:
   - はじめに: index.md
